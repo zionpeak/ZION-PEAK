@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zion Peak — Summit Package</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#05080f;
+  font-family:'Inter', sans-serif;
+}
+
+.zp-card {
+  --bg-deep: #060B14;
+  --bg-alt: #0F2038;
+  --blue: #0EA5E9;
+  --blue-light: #7DD3FC;
+  --cream: #F4F6F8;
+  position: relative;
+  width: 340px;
+  border-radius: 20px;
+  padding: 40px 32px 32px;
+  background: linear-gradient(155deg, var(--bg-deep) 0%, var(--bg-alt) 48%, var(--blue) 130%);
+  box-shadow: 0 20px 60px -15px rgba(14,165,233,0.25), 0 4px 20px rgba(0,0,0,0.5);
+  overflow: hidden;
+  transition: transform .35s ease, box-shadow .35s ease;
+  color: var(--cream);
+}
+.zp-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 70px -12px rgba(14,165,233,0.4), 0 10px 30px rgba(0,0,0,0.6);
+}
+.zp-mountain {
+  position: absolute;
+  bottom: -10px;
+  right: -20px;
+  width: 200px;
+  opacity: 0.10;
+  pointer-events: none;
+}
+.zp-badge {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(125,211,252,0.14);
+  border: 1px solid rgba(125,211,252,0.3);
+  color: var(--blue-light);
+}
+.zp-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--blue-light);
+  opacity: 0.8;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.zp-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  margin-bottom: 6px;
+  color: var(--cream);
+}
+.zp-desc {
+  font-size: 13.5px;
+  color: var(--cream);
+  opacity: 0.65;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.zp-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 26px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.zp-price .amount { font-size: 44px; font-weight: 700; color: var(--cream); }
+.zp-price .period { font-size: 13px; color: var(--cream); opacity: 0.55; }
+
+.zp-features { list-style: none; padding: 0; margin: 0 0 28px; display: flex; flex-direction: column; gap: 13px; }
+.zp-features li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--cream); opacity: 0.85; }
+.zp-features svg { flex-shrink: 0; }
+
+.zp-cta {
+  width: 100%;
+  padding: 13px 0;
+  border-radius: 10px;
+  border: none;
+  background: var(--cream);
+  color: var(--bg-deep);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform .2s ease, gap .2s ease;
+}
+.zp-card:hover .zp-cta { gap: 12px; }
+.zp-cta:active { transform: scale(0.97); }
+</style>
+</head>
+<body>
+
+<div class="zp-card">
+  <svg class="zp-mountain" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#7DD3FC" fill-rule="evenodd" clip-rule="evenodd" d="M15 150 L55 70 L85 135 L115 20 L145 130 L170 75 L185 150 Z M115 20 L124 130 L116 130 Z"/>
+  </svg>
+  <div class="zp-badge">MOST POPULAR</div>
+  <div class="zp-eyebrow">Zion Peak · Web Package</div>
+  <div class="zp-title">Summit</div>
+  <div class="zp-desc">A full custom site built, launched, and handed off — no templates, no monthly builder fees.</div>
+  <div class="zp-price"><span class="amount">$650</span><span class="period">/ one-time</span></div>
+  <ul class="zp-features">
+    <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Custom design, no templates</li>
+    <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Free hosting setup (Netlify/Vercel)</li>
+    <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Mobile-first, fast load</li>
+    <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>1 round of revisions included</li>
+  </ul>
+  <button class="zp-cta">Book this package
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
+
+</body>
+</html>

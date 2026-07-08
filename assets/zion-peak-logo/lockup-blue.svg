@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 160">
+  <svg x="8" y="18" width="148" height="120" viewBox="0 0 200 160">
+    <path fill-rule="evenodd" clip-rule="evenodd" fill="#0EA5E9"
+      d="M15 150 L55 70 L85 135 L115 20 L145 130 L170 75 L185 150 Z M115 20 L124 130 L116 130 Z"/>
+  </svg>
+  <text x="182" y="80" font-family="'Space Grotesk','Inter','Sora',sans-serif"
+    font-weight="700" font-size="50" letter-spacing="-1.5" fill="#0EA5E9">ZION PEAK</text>
+  <text x="184" y="110" font-family="'Space Grotesk','Inter','Sora',sans-serif"
+    font-weight="500" font-size="13" letter-spacing="4" fill="#0EA5E9" opacity="0.7">BUILT FOR HIGHER GROUND.</text>
+</svg>

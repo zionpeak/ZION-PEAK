@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+
+# Editor / tooling
+.claude/
+.mcp.json
+
+# Other projects colocated in this folder — not part of the Zion Peak site
+valentine-portfolio/
+business cards/
+car-crazy-preview
+
+# Raw working materials superseded by processed assets/ files
+IMG_5359.jpeg
+IMG_5361.jpeg
+Screenshot 2026-07-04 at 1.21.28*am.png
+Screenshot 2026-07-04 at 1.21.35*am.png
+A182A70B-3E4D-47E7-BE6E-DD1E62E416F6*.PNG
+zion_peak_avatar.png
+zion_peak_lockup_navy_bg.png
+zion_peak_lockup_transparent.png
