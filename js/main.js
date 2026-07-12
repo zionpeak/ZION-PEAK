@@ -5,12 +5,13 @@
 
   /* ---------- Sticky header state ---------- */
   var header = document.getElementById('siteHeader');
-  function onScroll() {
-    if (window.scrollY > 12) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
-  }
-  document.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  var headerSentinel = document.createElement('div');
+  headerSentinel.setAttribute('aria-hidden', 'true');
+  headerSentinel.style.cssText = 'position:absolute; top:0; left:0; width:1px; height:12px; pointer-events:none;';
+  document.body.insertBefore(headerSentinel, document.body.firstChild);
+  new IntersectionObserver(function (entries) {
+    header.classList.toggle('scrolled', !entries[0].isIntersecting);
+  }).observe(headerSentinel);
 
   /* ---------- Mobile nav toggle ---------- */
   var navToggle = document.getElementById('navToggle');

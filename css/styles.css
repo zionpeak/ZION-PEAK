@@ -16,6 +16,15 @@
   --border: rgba(244, 246, 248, 0.12);
   --border-strong: rgba(244, 246, 248, 0.24);
 
+  /* Summit Journey — light progression from the dark hero to the bright summit (contact) */
+  --tone-dawn:    #060b14;
+  --tone-vision:  #0c1e34;
+  --tone-midday:  #163a5c;
+  --tone-pivot:   #1f4f78;
+  --tone-growth:  #2d6f96;
+  --tone-clarity: #3f7fa0;
+  --tone-summit:  #cfe8f7;
+
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -49,7 +58,6 @@
    Reset & base
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background: var(--bg-deep);
@@ -75,6 +83,16 @@ input, select, textarea { font: inherit; color: inherit; }
 }
 .container-narrow { max-width: 760px; }
 
+/* Summit Journey — shared scroll-lit backdrop (JS-driven; sections carry their own
+   static gradient fallback below for no-JS / reduced-motion). */
+.journey-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--tone-vision);
+  pointer-events: none;
+}
+
 .skip-link {
   position: absolute; left: -9999px; top: 0;
   background: var(--blue); color: var(--bg-deep);
@@ -86,6 +104,37 @@ input, select, textarea { font: inherit; color: inherit; }
   outline: 2px solid var(--blue);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* ============================================================
+   Custom cursor (fine-pointer + motion-allowed only; JS-injected)
+   ============================================================ */
+.custom-cursor-on, .custom-cursor-on a, .custom-cursor-on button, .custom-cursor-on input,
+.custom-cursor-on select, .custom-cursor-on textarea, .custom-cursor-on label {
+  cursor: none;
+}
+.custom-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  box-shadow: 0 0 0 1px rgba(6, 11, 20, 0.3);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out), width 220ms var(--ease-out), height 220ms var(--ease-out),
+    margin 220ms var(--ease-out), background-color 220ms var(--ease-out), border-color 220ms var(--ease-out);
+  will-change: transform;
+}
+.custom-cursor.is-active { opacity: 1; }
+.custom-cursor.is-hover {
+  width: 30px; height: 30px;
+  margin: -15px 0 0 -15px;
+  background: transparent;
+  border: 1.5px solid var(--blue-light);
+  box-shadow: none;
 }
 
 /* ============================================================
@@ -260,12 +309,16 @@ section { padding: 120px 0; position: relative; }
   flex-direction: column;
   justify-content: center;
   padding: 160px 0 80px;
-  background: linear-gradient(155deg, var(--bg-deep) 0%, var(--bg-alt) 48%, var(--blue) 130%);
+  background: linear-gradient(165deg, #05080f 0%, var(--bg-deep) 45%, var(--bg-alt) 100%);
   color: var(--cream);
   overflow: hidden;
 }
 
 .hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-sky {
+  position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 50% 0%, rgba(15,32,56,0.6), transparent 62%);
+}
 .hero-grid {
   position: absolute; inset: 0;
   background-image:
@@ -299,13 +352,55 @@ section { padding: 120px 0; position: relative; }
   to { transform: translate(40px, 30px) scale(1.12); }
 }
 
+/* Soft light source — ambient CSS drift on the wrapper, pointer-follow (JS) on the core */
+.hero-light {
+  position: absolute;
+  top: 4%; left: 50%;
+  width: 640px; height: 640px;
+  margin-left: -320px;
+  pointer-events: none;
+  will-change: transform;
+  animation: lightDrift 18s ease-in-out infinite alternate;
+}
+.hero-light-core {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(125,211,252,0.14) 0%, rgba(14,165,233,0.07) 42%, transparent 72%);
+  filter: blur(20px);
+  will-change: transform;
+}
+@keyframes lightDrift {
+  from { transform: translate(-16px, -8px) scale(1); }
+  to   { transform: translate(16px, 10px) scale(1.06); }
+}
+
+/* Drifting fog/cloud bands between mountain layers */
+.hero-fog {
+  position: absolute;
+  left: -12%;
+  width: 124%;
+  border-radius: 50%;
+  filter: blur(28px);
+  background: linear-gradient(90deg, transparent, rgba(125,211,252,0.16), transparent);
+  pointer-events: none;
+  will-change: transform;
+}
+.fog-1 { top: 27%; height: 60px; opacity: 0.14; animation: fogDrift 46s linear infinite; }
+.fog-2 { top: 42%; height: 80px; opacity: 0.22; animation: fogDrift 32s linear infinite reverse; }
+.fog-3 { top: 58%; height: 100px; opacity: 0.26; animation: fogDrift 26s linear infinite; }
+@keyframes fogDrift {
+  from { transform: translateX(-8%); }
+  to   { transform: translateX(8%); }
+}
+
 .hero-peaks { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; }
 .peak { opacity: 1; }
-.peak-back  { fill: rgba(244,246,248,0.05); }
-.peak-mid   { fill: rgba(244,246,248,0.09); }
-.peak-front { fill: var(--bg-alt); }
+.peak-far   { fill: rgba(157,214,247,0.10); }
+.peak-back  { fill: rgba(125,196,240,0.14); }
+.peak-mid   { fill: rgba(20,40,74,0.6); }
+.peak-front { fill: #060b14; }
 
-.hero-inner { position: relative; z-index: 1; }
+.hero-inner { position: relative; z-index: 1; will-change: transform; }
 
 .hero-title {
   font-size: clamp(2.6rem, 6.6vw, 5.4rem);
@@ -313,6 +408,7 @@ section { padding: 120px 0; position: relative; }
   letter-spacing: -0.02em;
   max-width: 16ch;
 }
+.hero-title .line-mask { display: block; overflow: hidden; }
 .hero-title .line { display: block; }
 .hero-title-slogan {
   font-size: clamp(3.4rem, 9vw, 7.5rem);
@@ -332,11 +428,7 @@ section { padding: 120px 0; position: relative; }
   fill: none;
   stroke-width: 3;
   stroke-linecap: round;
-  stroke-dasharray: 420;
-  stroke-dashoffset: 420;
-  animation: draw 1000ms 900ms var(--ease-out) forwards;
 }
-@keyframes draw { to { stroke-dashoffset: 0; } }
 
 .hero-sub {
   margin-top: 26px;
@@ -368,40 +460,49 @@ section { padding: 120px 0; position: relative; }
   margin-top: 4px;
 }
 
-.scroll-cue {
+.scroll-path {
   position: absolute;
-  bottom: 34px; left: 50%;
+  bottom: 40px; left: 50%;
   transform: translateX(-50%);
   z-index: 1;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(244, 246, 248, 0.55);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  color: rgba(244, 246, 248, 0.5);
   transition: color var(--dur-fast);
 }
-.scroll-cue:hover { color: var(--blue-light); }
-.scroll-cue-line {
-  width: 1px; height: 34px;
-  background: rgba(244, 246, 248, 0.4);
+.scroll-path:hover { color: var(--blue-light); }
+.scroll-path-track {
   position: relative;
+  width: 1px; height: 46px;
+  background: rgba(244, 246, 248, 0.18);
   overflow: hidden;
 }
-.scroll-cue-line::after {
-  content: ''; position: absolute; left: 0; top: -100%;
-  width: 100%; height: 100%;
+.scroll-path-dot {
+  position: absolute;
+  left: 50%; top: -8px;
+  width: 5px; height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
   background: var(--blue-light);
-  animation: scrollLine 1.8s ease-in-out infinite;
+  box-shadow: 0 0 8px 1px rgba(125, 211, 252, 0.6);
+  animation: scrollTravel 2.4s ease-in-out infinite;
 }
-@keyframes scrollLine {
-  0% { top: -100%; } 60% { top: 100%; } 100% { top: 100%; }
+@keyframes scrollTravel {
+  0%   { top: -8px; opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { top: 46px; opacity: 0; }
+}
+.scroll-path-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 /* ============================================================
    Meaning & Purpose
    ============================================================ */
-.meaning { background: var(--bg-alt); }
+.meaning { background: linear-gradient(180deg, var(--tone-dawn), var(--tone-vision)); }
 .meaning-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -446,6 +547,7 @@ section { padding: 120px 0; position: relative; }
 /* ============================================================
    Process
    ============================================================ */
+.process { background: linear-gradient(180deg, var(--tone-vision), var(--tone-midday)); }
 .steps {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -494,25 +596,58 @@ section { padding: 120px 0; position: relative; }
 .step p { color: var(--muted); font-size: 0.95rem; }
 
 /* ============================================================
+   Pivot statement — the emotional turning point of the journey
+   ============================================================ */
+.pivot {
+  background: linear-gradient(180deg, var(--tone-midday), var(--tone-pivot));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56vh;
+  text-align: center;
+}
+.pivot-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  font-size: clamp(2.4rem, 7vw, 5.5rem);
+}
+.pivot-title .line-mask { display: block; overflow: hidden; }
+.pivot-title .line { display: block; }
+
+/* ============================================================
    Work / Project cards
    ============================================================ */
-.work { background: var(--bg-alt); }
-.work-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+.work { background: linear-gradient(180deg, var(--tone-pivot), var(--tone-growth)); padding-bottom: 0; }
+
+/* Pinned horizontal-pan track (desktop). JS enables the pin; this is the
+   static/mobile layout that also serves as the no-JS and reduced-motion fallback. */
+.work-pin {
+  position: relative;
+  overflow: hidden;
+}
+.work-track {
+  display: flex;
+  align-items: center;
+  gap: 5vw;
+  padding: 40px 8vw 120px;
 }
 .project-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border);
-  transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+  flex: 0 0 auto;
+  width: min(720px, 82vw);
+  transition: box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med) var(--ease-out);
 }
 .project-card:hover {
-  transform: translateY(-8px);
   box-shadow: var(--shadow-hover);
+  border-color: var(--border-strong);
 }
+.tilt-card { perspective: 1200px; will-change: transform; }
 
 .mock { background: #0d0d0d; }
 .mock-chrome {
@@ -551,64 +686,38 @@ section { padding: 120px 0; position: relative; }
   background: var(--blue-light);
   box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.25);
 }
+.mock-concept {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(244, 246, 248, 0.75);
+  background: rgba(244, 246, 248, 0.08);
+  border: 1px solid var(--border-strong);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.mock-concept-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(244, 246, 248, 0.6);
+}
 
 .mock-screen { aspect-ratio: 16 / 12; overflow: hidden; position: relative; }
-.project-card:hover .mock-screen { }
 .mock-screen-photo { aspect-ratio: 1.75; }
 .mock-screen-photo img {
   width: 100%; height: 100%;
   object-fit: cover;
   object-position: top center;
   transition: transform 600ms var(--ease-out);
+  transform-origin: center;
 }
-.project-card:hover .mock-screen-photo img { transform: scale(1.04); }
-.mock-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 20px;
-}
-.mock-logo { font-family: var(--font-display); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.02em; }
-.mock-navlinks { display: flex; gap: 10px; }
-.mock-navlinks i { width: 20px; height: 6px; border-radius: 3px; background: currentColor; opacity: 0.4; display: block; }
-
-.mock-hero { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px 20px; height: calc(100% - 50px); gap: 12px; }
-.mock-heading-block { display: flex; flex-direction: column; gap: 12px; }
-.mock-kicker { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; opacity: 0.65; }
-.mock-h1 { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; line-height: 1.15; }
-.mock-h1-serif { font-family: Georgia, serif; font-weight: 400; font-style: italic; }
-.mock-btn {
-  display: inline-flex; align-self: flex-start;
-  padding: 9px 18px; border-radius: 999px;
-  font-size: 0.72rem; font-weight: 700;
-  margin-top: 4px;
-  transition: transform var(--dur-fast) var(--ease-out);
-}
-.project-card:hover .mock-btn { transform: scale(1.05); }
-.mock-art { width: 110px; flex-shrink: 0; }
+.project-card:hover .mock-screen-photo img { transform: scale(1.05); }
 
 /* Barbershop palette (real screenshot — this is just the image-load fallback tone) */
 .mock-barber .mock-screen { background: var(--bg-deep); color: #f2e6d3; }
-
-/* Cafe palette */
-.mock-cafe .mock-screen { background: #fbf3e7; color: #4a3421; }
-.mock-cafe .mock-hero-center { flex-direction: column; align-items: center; text-align: center; justify-content: center; gap: 14px; }
-.mock-cafe .mock-btn-outline { background: transparent; border: 1.5px solid #4a3421; color: #4a3421; }
-.mock-art-row { display: flex; gap: 10px; margin-top: 6px; }
-
-/* Contractor palette */
-.mock-contractor .mock-screen { background: #12212e; color: #e8eef2; }
-.mock-nav-dark { border-bottom: 1px solid rgba(232,238,242,0.1); }
-.mock-hero-contractor { align-items: flex-end; }
-.mock-btn-orange { background: #e8622c; color: #12212e; }
-.mock-badge-stack { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
-.mock-badge {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  background: rgba(232,238,242,0.08);
-  border: 1px solid rgba(232,238,242,0.16);
-  padding: 6px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
-}
+.mock-carcrazy .mock-screen { background: var(--bg-deep); }
 
 .project-info { padding: 26px 28px 30px; }
 .project-info h3 { font-size: 1.3rem; margin-bottom: 10px; }
@@ -637,51 +746,14 @@ section { padding: 120px 0; position: relative; }
 .project-link:hover svg { transform: translate(1px, -1px); }
 
 /* ============================================================
-   Testimonials
-   ============================================================ */
-.testimonials { background: var(--bg-deep); }
-.testimonial-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-}
-.testimonial-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 34px 28px;
-  position: relative;
-  transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
-}
-.testimonial-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
-.quote-mark { width: 34px; height: 28px; color: var(--blue); opacity: 0.5; margin-bottom: 12px; }
-.stars { color: var(--blue); letter-spacing: 2px; margin-bottom: 14px; font-size: 0.95rem; }
-.testimonial-card blockquote {
-  margin: 0 0 26px;
-  font-size: 1.02rem;
-  line-height: 1.6;
-  color: var(--cream);
-}
-.testimonial-card figcaption { display: flex; align-items: center; gap: 12px; }
-.avatar {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  background: var(--av, var(--blue-dim));
-  color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-weight: 700; font-size: 0.85rem;
-  flex-shrink: 0;
-}
-.who { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
-.who strong { color: var(--cream); font-size: 0.92rem; }
-
-/* ============================================================
    FAQ
    ============================================================ */
-.faq { background: var(--bg-alt); }
+.faq { background: linear-gradient(180deg, var(--tone-growth), var(--tone-clarity)); }
 .accordion-item {
   border-bottom: 1px solid var(--border);
+  transition: background var(--dur-med) var(--ease-out);
 }
+.accordion-item:hover { background: rgba(244, 246, 248, 0.03); }
 .accordion-trigger {
   width: 100%;
   display: flex; align-items: center; justify-content: space-between;
@@ -718,7 +790,7 @@ section { padding: 120px 0; position: relative; }
    Contact
    ============================================================ */
 .contact {
-  background: linear-gradient(155deg, var(--bg-deep) 0%, var(--bg-alt) 48%, var(--blue) 130%);
+  background: linear-gradient(165deg, var(--tone-clarity) 0%, var(--tone-summit) 65%, #eef7fc 100%);
   color: var(--cream);
   overflow: hidden;
 }
@@ -731,6 +803,10 @@ section { padding: 120px 0; position: relative; }
   grid-template-columns: 1fr 1.1fr;
   gap: 64px;
   align-items: start;
+  padding: 48px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(165deg, rgba(6, 11, 20, 0.85), rgba(15, 32, 56, 0.72));
+  backdrop-filter: blur(8px);
 }
 .contact-copy h2 { font-size: clamp(2rem, 3.6vw, 2.8rem); color: var(--cream); margin-bottom: 16px; }
 .contact-details { margin-top: 40px; display: flex; flex-direction: column; gap: 18px; }
@@ -806,8 +882,21 @@ section { padding: 120px 0; position: relative; }
 }
 .footer-tag { font-family: var(--font-mono); font-size: 0.85rem; color: rgba(244,246,248,0.5); }
 .footer-nav { display: flex; gap: 26px; }
-.footer-nav a { font-size: 0.9rem; transition: color var(--dur-fast); }
+.footer-nav a {
+  position: relative;
+  font-size: 0.9rem;
+  padding-bottom: 2px;
+  transition: color var(--dur-fast);
+}
+.footer-nav a::after {
+  content: '';
+  position: absolute; left: 0; bottom: 0;
+  width: 0; height: 1px;
+  background: var(--blue-light);
+  transition: width var(--dur-med) var(--ease-out);
+}
 .footer-nav a:hover { color: var(--blue-light); }
+.footer-nav a:hover::after { width: 100%; }
 .to-top {
   width: 42px; height: 42px;
   border-radius: 50%;
@@ -932,9 +1021,7 @@ section { padding: 120px 0; position: relative; }
 @media (max-width: 1024px) {
   .steps { grid-template-columns: repeat(2, 1fr); }
   .steps::before { display: none; }
-  .work-grid { grid-template-columns: 1fr 1fr; }
-  .testimonial-grid { grid-template-columns: 1fr 1fr; }
-  .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+  .contact-inner { grid-template-columns: 1fr; gap: 48px; padding: 36px; }
   .meaning-grid { gap: 48px; }
 }
 
@@ -964,14 +1051,18 @@ section { padding: 120px 0; position: relative; }
   .hero-stats { flex-wrap: wrap; row-gap: 24px; }
 
   .steps { grid-template-columns: 1fr; }
-  .work-grid { grid-template-columns: 1fr; }
-  .testimonial-grid { grid-template-columns: 1fr; }
   .meaning-grid { grid-template-columns: 1fr; gap: 44px; }
-  .mock-hero { flex-direction: column; align-items: flex-start; }
-  .mock-art { width: 90px; align-self: flex-end; }
-  .mock-badge-stack { align-items: flex-start; }
-  .mock-hero-contractor { align-items: flex-start; }
 
+  /* Work track: JS disables the scroll-pin below 900px (see motion.js), so
+     this collapses to a plain stacked, vertically-scrolling column. */
+  .work-track {
+    flex-direction: column;
+    padding: 40px 20px 20px;
+    gap: 28px;
+  }
+  .project-card { width: 100%; }
+
+  .contact-inner { padding: 24px; }
   .form-row { grid-template-columns: 1fr; }
   .footer-inner { flex-direction: column; text-align: center; }
   .footer-nav { flex-wrap: wrap; justify-content: center; }

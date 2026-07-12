@@ -25,20 +25,24 @@
 </head>
 <body>
 
+<div class="journey-backdrop" id="journeyBackdrop" aria-hidden="true"></div>
+
 <a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ============ HEADER ============ -->
 <header class="site-header" id="siteHeader">
   <div class="container header-inner">
     <a href="#top" class="logo" aria-label="Zion Peak home">
-      <img class="logo-mark" src="assets/zion-peak-logo/icon-white.svg" alt="">
+      <svg class="logo-mark" id="brandMark" viewBox="0 5 200 160" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF"
+          d="M15 150 L55 70 L85 135 L115 20 L145 130 L170 75 L185 150 Z M115 20 L124 130 L116 130 Z"/>
+      </svg>
       <span class="logo-word">ZION <span class="logo-word-accent">PEAK</span></span>
     </a>
 
     <nav class="main-nav" id="mainNav" aria-label="Primary">
       <a href="#process">Process</a>
       <a href="#work">Work</a>
-      <a href="#testimonials">Testimonials</a>
       <a href="#faq">FAQ</a>
       <a href="#contact" class="nav-cta">Start a Project</a>
     </nav>
@@ -53,34 +57,45 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="top">
-    <div class="hero-bg" aria-hidden="true">
-      <svg class="hero-peaks" viewBox="0 0 1600 500" preserveAspectRatio="none">
+    <div class="hero-bg" id="heroBg" aria-hidden="true">
+      <div class="hero-sky"></div>
+      <div class="hero-light"><div class="hero-light-core"></div></div>
+
+      <svg class="hero-peaks" data-depth="0.05" viewBox="0 0 1600 500" preserveAspectRatio="none">
+        <polygon class="peak peak-far" points="0,500 0,280 240,160 500,270 780,140 1060,260 1340,130 1600,250 1600,500" />
+      </svg>
+      <div class="hero-fog fog-1"></div>
+
+      <svg class="hero-peaks" data-depth="0.09" viewBox="0 0 1600 500" preserveAspectRatio="none">
         <polygon class="peak peak-back" points="0,500 0,320 220,140 430,320 620,180 860,340 1080,120 1300,300 1600,180 1600,500" />
+      </svg>
+      <div class="hero-fog fog-2"></div>
+
+      <svg class="hero-peaks" data-depth="0.16" viewBox="0 0 1600 500" preserveAspectRatio="none">
         <polygon class="peak peak-mid" points="0,500 0,400 260,220 520,380 760,240 1000,400 1260,220 1600,380 1600,500" />
+      </svg>
+      <div class="hero-fog fog-3"></div>
+
+      <svg class="hero-peaks" data-depth="0.26" viewBox="0 0 1600 500" preserveAspectRatio="none">
         <polygon class="peak peak-front" points="0,500 0,440 180,340 400,460 660,320 920,460 1180,340 1440,460 1600,400 1600,500" />
       </svg>
-      <div class="hero-glow glow-1"></div>
-      <div class="hero-glow glow-2"></div>
+
       <div class="hero-grid" aria-hidden="true"></div>
     </div>
 
-    <div class="container hero-inner">
-      <p class="eyebrow reveal" data-reveal>
-        <span class="eyebrow-dot"></span> Web design &amp; development studio
-      </p>
-
-      <h1 class="hero-title hero-title-slogan">
-        <span class="line reveal" data-reveal style="--d:0">Built for</span>
-        <span class="line reveal" data-reveal style="--d:1"><span class="highlight">Higher Ground<svg class="underline-swash" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path d="M2,18 C120,4 280,4 398,16" /></svg></span></span>
+    <div class="container hero-inner" id="heroFg">
+      <h1 class="hero-title hero-title-slogan" id="heroTitle">
+        <span class="line-mask"><span class="line">Built for</span></span>
+        <span class="line-mask"><span class="line"><span class="highlight">Higher Ground<svg class="underline-swash" id="underlineSwash" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path d="M2,18 C120,4 280,4 398,16" /></svg></span></span></span>
       </h1>
 
-      <p class="hero-sub reveal" data-reveal style="--d:3">
+      <p class="hero-sub reveal" data-reveal style="--d:14">
         Zion Peak is an independent studio building fast, distinctive, conversion-ready
         websites for local businesses — barbershops, cafés, contractors, and everyone
         in between who's tired of looking like a template.
       </p>
 
-      <div class="hero-actions reveal" data-reveal style="--d:4">
+      <div class="hero-actions reveal" data-reveal style="--d:16">
         <a href="#contact" class="btn btn-primary">
           Start your project
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -88,25 +103,21 @@
         <a href="#work" class="btn btn-ghost">See the work</a>
       </div>
 
-      <div class="hero-stats reveal" data-reveal style="--d:5">
+      <div class="hero-stats reveal" data-reveal style="--d:18">
         <div class="stat">
-          <span class="stat-num" data-count="27">0</span>
+          <span class="stat-num" data-count="2">0</span>
           <span class="stat-label">Projects shipped</span>
         </div>
         <div class="stat">
           <span class="stat-num" data-count="98" data-suffix="%">0</span>
           <span class="stat-label">Client satisfaction</span>
         </div>
-        <div class="stat">
-          <span class="stat-num" data-count="14" data-suffix="d">0</span>
-          <span class="stat-label">Avg. turnaround</span>
-        </div>
       </div>
     </div>
 
-    <a href="#process" class="scroll-cue" aria-label="Scroll to next section">
-      <span class="scroll-cue-line"></span>
-      Scroll
+    <a href="#meaning" class="scroll-path reveal" data-reveal style="--d:20" aria-label="Scroll to explore">
+      <span class="scroll-path-track"><span class="scroll-path-dot"></span></span>
+      <span class="scroll-path-label">Scroll</span>
     </a>
   </section>
 
@@ -215,22 +226,33 @@
     </div>
   </section>
 
+  <!-- ============ PIVOT STATEMENT ============ -->
+  <section class="pivot" id="pivot">
+    <div class="container">
+      <h2 class="pivot-title" id="pivotTitle">
+        <span class="line-mask"><span class="line">Every business</span></span>
+        <span class="line-mask"><span class="line">has a <span class="highlight">peak.</span></span></span>
+      </h2>
+    </div>
+  </section>
+
   <!-- ============ WORK / SHOWCASE ============ -->
   <section class="work" id="work">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow reveal" data-reveal><span class="eyebrow-dot"></span> Selected work</p>
         <h2 class="reveal" data-reveal>Built for businesses like yours</h2>
         <p class="section-lead reveal" data-reveal>
           A sample of the kind of local-business sites Zion Peak builds — each one designed
           around its brand, not a shared theme.
         </p>
       </div>
+    </div>
 
-      <div class="work-grid">
+    <div class="work-pin" id="workPin">
+      <div class="work-track" id="workTrack">
 
         <!-- Project 1: Barbershop (real client — ValzCutz) -->
-        <article class="project-card reveal" data-reveal style="--d:0">
+        <article class="project-card tilt-card">
           <div class="mock mock-barber">
             <div class="mock-chrome">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -254,115 +276,27 @@
           </div>
         </article>
 
-        <!-- Project 2: Café -->
-        <article class="project-card reveal" data-reveal style="--d:1">
-          <div class="mock mock-cafe">
+        <!-- Project 2: Car wash (real business, concept pitch — Car Crazy) -->
+        <article class="project-card tilt-card">
+          <div class="mock mock-carcrazy">
             <div class="mock-chrome">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="mock-url">commongroundscafe.co</span>
+              <span class="mock-url">carcrazy-marshill.com</span>
+              <span class="mock-concept"><span class="mock-concept-dot"></span>Concept build</span>
             </div>
-            <div class="mock-screen">
-              <div class="mock-nav">
-                <span class="mock-logo">Common Grounds</span>
-                <span class="mock-navlinks"><i></i><i></i><i></i></span>
-              </div>
-              <div class="mock-hero mock-hero-center">
-                <span class="mock-kicker">SLOW MORNINGS · FAST WIFI</span>
-                <span class="mock-h1 mock-h1-serif">Coffee worth<br>the walk.</span>
-                <span class="mock-btn mock-btn-outline">View the menu</span>
-                <div class="mock-art-row" aria-hidden="true">
-                  <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#e7cdae"/><path d="M12 18h16v8a8 8 0 0 1-16 0v-8Z" fill="#6f4a2f"/><path d="M28 20h3a3 3 0 0 1 0 6h-3" stroke="#6f4a2f" stroke-width="2" fill="none"/></svg>
-                  <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#cfe0c9"/><path d="M14 26c0-8 4-14 6-16 2 2 6 8 6 16" stroke="#4c6b3f" stroke-width="2" fill="none"/></svg>
-                  <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="20" r="18" fill="#e7cdae"/><rect x="12" y="14" width="16" height="14" rx="2" fill="#a9784e"/></svg>
-                </div>
-              </div>
+            <div class="mock-screen mock-screen-photo">
+              <img src="assets/images/car-crazy-screenshot.jpg" alt="Car Crazy car wash building with a blue metal roof and open wash bays in Mars Hill, NC" loading="lazy">
             </div>
           </div>
           <div class="project-info">
-            <h3>Common Grounds Café</h3>
-            <p>Warm, editorial, and appetite-driving — a menu-first layout that reads like a printed zine on any screen.</p>
+            <h3>Car Crazy</h3>
+            <p>A pitch demo for a real Mars Hill, NC car wash — self-serve bays and an automatic tunnel wash, built to show what their site could be.</p>
             <ul class="tag-list">
-              <li>Menu CMS</li><li>Instagram feed</li><li>Order-ahead link</li>
+              <li>Local SEO schema</li><li>Click-to-call</li><li>Mobile-first</li>
             </ul>
           </div>
         </article>
 
-        <!-- Project 3: Contractor -->
-        <article class="project-card reveal" data-reveal style="--d:2">
-          <div class="mock mock-contractor">
-            <div class="mock-chrome">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="mock-url">summitandsons.build</span>
-            </div>
-            <div class="mock-screen">
-              <div class="mock-nav mock-nav-dark">
-                <span class="mock-logo">SUMMIT &amp; SONS</span>
-                <span class="mock-navlinks"><i></i><i></i><i></i></span>
-              </div>
-              <div class="mock-hero mock-hero-contractor">
-                <div class="mock-heading-block">
-                  <span class="mock-kicker">GENERAL CONTRACTING</span>
-                  <span class="mock-h1">Built right.<br>On schedule.</span>
-                  <span class="mock-btn mock-btn-orange">Get a free quote</span>
-                </div>
-                <div class="mock-badge-stack" aria-hidden="true">
-                  <span class="mock-badge">★★★★★ 4.9 (112)</span>
-                  <span class="mock-badge">Licensed &amp; Insured</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="project-info">
-            <h3>Summit &amp; Sons Contracting</h3>
-            <p>Trust-first design for a high-ticket service — quote requests, reviews, and project galleries above the fold.</p>
-            <ul class="tag-list">
-              <li>Quote form</li><li>Review widget</li><li>Project gallery</li>
-            </ul>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ TESTIMONIALS ============ -->
-  <section class="testimonials" id="testimonials">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow reveal" data-reveal><span class="eyebrow-dot"></span> Kind words</p>
-        <h2 class="reveal" data-reveal>Don't take our word for it</h2>
-      </div>
-
-      <div class="testimonial-grid">
-        <figure class="testimonial-card reveal" data-reveal style="--d:0">
-          <svg class="quote-mark" viewBox="0 0 40 32" aria-hidden="true"><path d="M0 32V19.6C0 8.6 6 1.4 15.6 0l1.8 5.4C11.4 6.6 8 10.4 8 15.6h8V32H0Zm22 0V19.6C22 8.6 28 1.4 37.6 0l1.8 5.4c-6 1.2-9.4 5-9.4 10.2h8V32H22Z"/></svg>
-          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>“Bookings doubled in the first month. Clients keep telling me the site looks more expensive than the haircut.”</blockquote>
-          <figcaption>
-            <span class="avatar" style="--av:#0EA5E9">MR</span>
-            <span class="who"><strong>Marcus Reyes</strong><br>Owner, independent barbershop</span>
-          </figcaption>
-        </figure>
-
-        <figure class="testimonial-card reveal" data-reveal style="--d:1">
-          <svg class="quote-mark" viewBox="0 0 40 32" aria-hidden="true"><path d="M0 32V19.6C0 8.6 6 1.4 15.6 0l1.8 5.4C11.4 6.6 8 10.4 8 15.6h8V32H0Zm22 0V19.6C22 8.6 28 1.4 37.6 0l1.8 5.4c-6 1.2-9.4 5-9.4 10.2h8V32H22Z"/></svg>
-          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>“I sell coffee, not code — Zion Peak actually explained things in plain English and delivered early. Rare combo.”</blockquote>
-          <figcaption>
-            <span class="avatar" style="--av:#4C6B3F">DA</span>
-            <span class="who"><strong>Dana Alvarez</strong><br>Founder, Common Grounds Café</span>
-          </figcaption>
-        </figure>
-
-        <figure class="testimonial-card reveal" data-reveal style="--d:2">
-          <svg class="quote-mark" viewBox="0 0 40 32" aria-hidden="true"><path d="M0 32V19.6C0 8.6 6 1.4 15.6 0l1.8 5.4C11.4 6.6 8 10.4 8 15.6h8V32H0Zm22 0V19.6C22 8.6 28 1.4 37.6 0l1.8 5.4c-6 1.2-9.4 5-9.4 10.2h8V32H22Z"/></svg>
-          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>“Quote requests went from a trickle to more than we can answer same-day. The site pays for itself.”</blockquote>
-          <figcaption>
-            <span class="avatar" style="--av:#E8622C">TS</span>
-            <span class="who"><strong>Tom Summit</strong><br>Co-owner, Summit &amp; Sons Contracting</span>
-          </figcaption>
-        </figure>
       </div>
     </div>
   </section>
@@ -520,7 +454,6 @@
     <nav class="footer-nav" aria-label="Footer">
       <a href="#process">Process</a>
       <a href="#work">Work</a>
-      <a href="#testimonials">Testimonials</a>
       <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -530,10 +463,13 @@
   </div>
   <div class="container footer-bottom">
     <p class="footer-faith">Built with purpose. Guided by faith.</p>
-    <p>© <span id="year"></span> Zion Peak Studio. Demo portfolio site — all client names and testimonials are illustrative.</p>
+    <p>© <span id="year"></span> Zion Peak Studio.</p>
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="js/main.js"></script>
+<script src="js/motion.js"></script>
 </body>
 </html>
