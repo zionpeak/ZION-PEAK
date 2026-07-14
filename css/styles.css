@@ -93,6 +93,55 @@ input, select, textarea { font: inherit; color: inherit; }
   pointer-events: none;
 }
 
+/* Act II — The Climb: mountains rising behind Meaning/Founder + Process,
+   growth/visibility driven by scroll (see setupClimbMountains in motion.js).
+   Sits just above the journey-backdrop, still behind normal page content. */
+.climb-mountains {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 42vh;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: bottom center;
+  will-change: transform, opacity;
+}
+.climb-peaks { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; }
+.climb-peak-back  { fill: rgba(125, 196, 240, 0.14); }
+.climb-peak-mid   { fill: rgba(20, 40, 74, 0.55); }
+.climb-peak-front { fill: #060b14; }
+.climb-fog {
+  position: absolute;
+  left: -12%;
+  width: 124%;
+  height: 70px;
+  border-radius: 50%;
+  filter: blur(26px);
+  background: linear-gradient(90deg, transparent, rgba(214, 232, 247, 0.18), transparent);
+  pointer-events: none;
+}
+.climb-fog-1 { bottom: 30%; }
+.climb-fog-2 { bottom: 12%; }
+
+/* Second eagle pass, reusing the hero eagle's look, fixed for the Process moment */
+#processEagle {
+  position: fixed;
+  top: 22%;
+  left: 0;
+  z-index: -1;
+}
+
+/* Final eagle pass — lands and settles in the bright Contact sky, so it needs a
+   darker silhouette fill to read against light tones instead of dark ones. */
+#contactEagle {
+  top: 8%;
+  right: 22%;
+  left: auto;
+  fill: rgba(6, 11, 20, 0.4);
+}
+
 .skip-link {
   position: absolute; left: -9999px; top: 0;
   background: var(--blue); color: var(--bg-deep);
@@ -142,7 +191,7 @@ input, select, textarea { font: inherit; color: inherit; }
    ============================================================ */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(16px);
   transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
   transition-delay: calc(var(--d, 0) * 90ms);
 }
@@ -172,16 +221,40 @@ input, select, textarea { font: inherit; color: inherit; }
   color: var(--bg-deep);
   box-shadow: 0 8px 24px -8px rgba(14, 165, 233, 0.5);
 }
-.btn-primary:hover { background: var(--blue-light); box-shadow: 0 12px 32px -6px rgba(14, 165, 233, 0.55); transform: translateY(-4px); }
+.btn-primary:hover {
+  background: var(--blue-light);
+  box-shadow: 0 12px 32px -6px rgba(14, 165, 233, 0.55), 0 24px 46px -10px rgba(14, 165, 233, 0.35);
+  transform: translateY(-4px);
+}
 
 .btn-ghost {
   background: transparent;
   color: var(--cream);
   border: 1.5px solid rgba(244, 246, 248, 0.35);
 }
-.btn-ghost:hover { border-color: var(--blue-light); color: var(--blue-light); transform: translateY(-4px); }
+.btn-ghost:hover {
+  border-color: var(--blue-light);
+  color: var(--blue-light);
+  box-shadow: 0 18px 38px -14px rgba(14, 165, 233, 0.4);
+  transform: translateY(-4px);
+}
 
 .btn-block { width: 100%; justify-content: center; }
+
+/* Contact form success state: checkmark draw-in + one-shot ripple */
+#submitBtn { position: relative; }
+#submitBtn .btn-check { display: none; }
+#submitBtn.is-success .btn-check { display: inline-block; }
+#submitBtn.is-success .btn-arrow { display: none; }
+.btn-success-ripple {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid rgba(230, 244, 252, 0.85);
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* ============================================================
    Header
@@ -215,6 +288,11 @@ input, select, textarea { font: inherit; color: inherit; }
   height: 30px;
   width: auto;
   flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-out), filter var(--dur-fast) var(--ease-out);
+}
+.site-header .logo:hover .logo-mark {
+  transform: translateY(-1.5px);
+  filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.55));
 }
 .logo-word {
   font-family: var(--font-display);
@@ -250,9 +328,13 @@ input, select, textarea { font: inherit; color: inherit; }
   color: var(--bg-deep) !important;
   padding: 11px 20px;
   border-radius: 999px;
-  transition: background var(--dur-fast), transform var(--dur-fast);
+  transition: background var(--dur-fast), transform var(--dur-fast), box-shadow var(--dur-fast);
 }
-.nav-cta:hover { background: var(--blue-light); transform: translateY(-4px); }
+.nav-cta:hover {
+  background: var(--blue-light);
+  box-shadow: 0 14px 30px -10px rgba(14, 165, 233, 0.5);
+  transform: translateY(-4px);
+}
 
 .nav-toggle {
   display: none;
@@ -309,7 +391,7 @@ section { padding: 120px 0; position: relative; }
   flex-direction: column;
   justify-content: center;
   padding: 160px 0 80px;
-  background: linear-gradient(165deg, #05080f 0%, var(--bg-deep) 45%, var(--bg-alt) 100%);
+  background: linear-gradient(180deg, #04070d 0%, var(--bg-deep) 42%, var(--bg-alt) 100%);
   color: var(--cream);
   overflow: hidden;
 }
@@ -352,6 +434,37 @@ section { padding: 120px 0; position: relative; }
   to { transform: translate(40px, 30px) scale(1.12); }
 }
 
+/* Pre-dawn moon — faint, fixed (not mouse-reactive; distant and still) */
+.hero-moon {
+  position: absolute;
+  top: 14%;
+  right: 20%;
+  width: 46px;
+  height: 46px;
+  border-radius: 48% 52% 51% 49% / 53% 47% 52% 48%;
+  background:
+    radial-gradient(circle 8px at 30% 63%, rgba(163, 143, 103, 0.24), transparent 100%),
+    radial-gradient(circle 5px at 67% 31%, rgba(163, 143, 103, 0.2), transparent 100%),
+    radial-gradient(circle 11px at 61% 66%, rgba(163, 143, 103, 0.13), transparent 100%),
+    radial-gradient(circle 4px at 45% 22%, rgba(163, 143, 103, 0.16), transparent 100%),
+    radial-gradient(circle at 40% 38%, #f7f0da 0%, #ece0bf 42%, rgba(236, 224, 191, 0.4) 65%, rgba(236, 224, 191, 0) 80%);
+  box-shadow:
+    0 0 10px 3px rgba(250, 240, 210, 0.4),
+    0 0 46px 16px rgba(250, 240, 210, 0.15);
+}
+.hero-moon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 280px;
+  height: 280px;
+  margin: -140px 0 0 -140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 246, 224, 0.14) 0%, rgba(255, 246, 224, 0.05) 45%, transparent 74%);
+  pointer-events: none;
+}
+
 /* Soft light source — ambient CSS drift on the wrapper, pointer-follow (JS) on the core */
 .hero-light {
   position: absolute;
@@ -385,15 +498,69 @@ section { padding: 120px 0; position: relative; }
   pointer-events: none;
   will-change: transform;
 }
-.fog-1 { top: 27%; height: 60px; opacity: 0.14; animation: fogDrift 46s linear infinite; }
-.fog-2 { top: 42%; height: 80px; opacity: 0.22; animation: fogDrift 32s linear infinite reverse; }
-.fog-3 { top: 58%; height: 100px; opacity: 0.26; animation: fogDrift 26s linear infinite; }
+.fog-1 { top: 52%; height: 55px; opacity: 0.14; animation: fogDrift 46s linear infinite; }
+.fog-2 { top: 64%; height: 75px; opacity: 0.22; animation: fogDrift 32s linear infinite reverse; }
+.fog-3 { top: 76%; height: 95px; opacity: 0.26; animation: fogDrift 26s linear infinite; }
 @keyframes fogDrift {
   from { transform: translateX(-8%); }
   to   { transform: translateX(8%); }
 }
 
-.hero-peaks { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; }
+/* Eagle — single silent glide across the sky, GSAP-driven (see motion.js) */
+.hero-eagle {
+  position: absolute;
+  top: 24%;
+  left: 0;
+  width: 64px;
+  height: auto;
+  opacity: 0;
+  fill: rgba(214, 230, 245, 0.4);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* Fine drifting particles — mist/dust catching faint light */
+.hero-particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.particle {
+  position: absolute;
+  left: var(--x);
+  bottom: -4%;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: rgba(226, 238, 250, 0.55);
+  opacity: 0;
+  animation: particleRise var(--dur) linear infinite;
+  animation-delay: var(--delay);
+}
+@keyframes particleRise {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  12%  { opacity: 0.45; }
+  85%  { opacity: 0.25; }
+  100% { transform: translate(var(--drift), -110vh); opacity: 0; }
+}
+
+/* Intro: soft localized glow bloom behind the centered logo (not a full flash) */
+.intro-glow {
+  position: fixed;
+  left: 50%;
+  top: 42%;
+  width: 70vmin;
+  height: 70vmin;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(157, 214, 247, 0.32) 0%, rgba(56, 132, 255, 0.12) 40%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 140;
+}
+
+/* Intro: the traveling logo clone (large center -> header slot) */
+.logo-mark-intro {
+  pointer-events: none;
+  filter: drop-shadow(0 0 18px rgba(157, 214, 247, 0.45));
+}
+
+.hero-peaks { position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; }
 .peak { opacity: 1; }
 .peak-far   { fill: rgba(157,214,247,0.10); }
 .peak-back  { fill: rgba(125,196,240,0.14); }
@@ -649,7 +816,28 @@ section { padding: 120px 0; position: relative; }
 }
 .tilt-card { perspective: 1200px; will-change: transform; }
 
-.mock { background: #0d0d0d; }
+.mock { position: relative; background: #0d0d0d; overflow: hidden; }
+.mock::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(75deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  transform: skewX(-20deg);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+}
+.project-card:hover .mock::after {
+  animation: mockSheen 1.15s ease-out;
+}
+@keyframes mockSheen {
+  0%   { left: -60%; opacity: 0; }
+  12%  { opacity: 0.9; }
+  100% { left: 130%; opacity: 0; }
+}
 .mock-chrome {
   display: flex; align-items: center; gap: 6px;
   padding: 11px 14px;
@@ -825,10 +1013,15 @@ section { padding: 120px 0; position: relative; }
   border-radius: 50%;
   border: 1.5px solid rgba(244, 246, 248, 0.25);
   display: flex; align-items: center; justify-content: center;
-  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), background var(--dur-fast);
+  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), background var(--dur-fast), box-shadow var(--dur-fast);
 }
 .social-icon svg { width: 18px; height: 18px; }
-.social-icon:hover { transform: translateY(-4px); border-color: var(--blue-light); background: rgba(244,246,248,0.06); }
+.social-icon:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue-light);
+  background: rgba(244,246,248,0.06);
+  box-shadow: 0 10px 24px -8px rgba(14, 165, 233, 0.45);
+}
 
 .contact-form {
   background: rgba(244, 246, 248, 0.06);
@@ -856,6 +1049,38 @@ section { padding: 120px 0; position: relative; }
 }
 .field select { color-scheme: dark; }
 .field textarea { resize: vertical; min-height: 100px; }
+
+/* Business-type autocomplete */
+.autocomplete { position: relative; display: flex; flex-direction: column; }
+.autocomplete input { width: 100%; }
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  background: #0d1727;
+  border: 1.5px solid rgba(244, 246, 248, 0.18);
+  border-radius: 10px;
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  z-index: 20;
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.6);
+}
+.autocomplete-list li {
+  padding: 10px 12px;
+  border-radius: 7px;
+  font-size: 0.92rem;
+  color: rgba(244, 246, 248, 0.85);
+  cursor: pointer;
+}
+.autocomplete-list li:hover,
+.autocomplete-list li.is-active {
+  background: rgba(14, 165, 233, 0.18);
+  color: var(--blue-light);
+}
 
 .form-note {
   margin-top: 14px;
@@ -902,11 +1127,16 @@ section { padding: 120px 0; position: relative; }
   border-radius: 50%;
   border: 1.5px solid rgba(244, 246, 248, 0.25);
   display: flex; align-items: center; justify-content: center;
-  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), box-shadow var(--dur-fast);
   flex-shrink: 0;
 }
 .to-top svg { width: 18px; height: 18px; }
-.to-top:hover { transform: translateY(-4px); border-color: var(--blue-light); color: var(--blue-light); }
+.to-top:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue-light);
+  color: var(--blue-light);
+  box-shadow: 0 10px 24px -8px rgba(14, 165, 233, 0.45);
+}
 .footer-bottom { padding: 24px 28px 32px; font-size: 0.8rem; text-align: center; }
 .footer-faith {
   font-family: var(--font-mono);

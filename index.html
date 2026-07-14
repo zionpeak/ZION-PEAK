@@ -21,11 +21,29 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=3">
 </head>
 <body>
 
 <div class="journey-backdrop" id="journeyBackdrop" aria-hidden="true"></div>
+
+<div class="climb-mountains" id="climbMountains" aria-hidden="true">
+  <svg class="climb-peaks" data-depth="0.4" viewBox="0 0 1600 500" preserveAspectRatio="none">
+    <polygon class="climb-peak climb-peak-back" points="0,500 0,320 220,140 430,320 620,180 860,340 1080,120 1300,300 1600,180 1600,500" />
+  </svg>
+  <div class="climb-fog climb-fog-1"></div>
+  <svg class="climb-peaks" data-depth="0.7" viewBox="0 0 1600 500" preserveAspectRatio="none">
+    <polygon class="climb-peak climb-peak-mid" points="0,500 0,400 260,220 520,380 760,240 1000,400 1260,220 1600,380 1600,500" />
+  </svg>
+  <div class="climb-fog climb-fog-2"></div>
+  <svg class="climb-peaks" data-depth="1" viewBox="0 0 1600 500" preserveAspectRatio="none">
+    <polygon class="climb-peak climb-peak-front" points="0,500 0,440 180,340 400,460 660,320 920,460 1180,340 1440,460 1600,400 1600,500" />
+  </svg>
+</div>
+
+<svg class="hero-eagle" id="processEagle" viewBox="0 0 120 40" aria-hidden="true">
+  <path d="M 9,11 C 24,9 40,12 52,14 C 56,13 58,8 61,7 C 63,6 65,7 66,8 L 71,11 L 66,13 C 67,13 70,13 74,13 C 90,11 104,10 117,11 L 108,15 L 114,19 L 104,19 L 110,24 L 99,22 C 90,20 82,20 76,20 L 72,24 L 76,31 L 69,29 L 63,35 L 57,29 L 50,31 L 54,24 L 50,20 C 44,20 36,20 27,22 L 16,24 L 22,19 L 12,19 L 18,15 Z" />
+</svg>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -59,7 +77,12 @@
   <section class="hero" id="top">
     <div class="hero-bg" id="heroBg" aria-hidden="true">
       <div class="hero-sky"></div>
+      <div class="hero-moon"></div>
       <div class="hero-light"><div class="hero-light-core"></div></div>
+
+      <svg class="hero-eagle" id="heroEagle" viewBox="0 0 120 40" aria-hidden="true">
+        <path d="M 9,11 C 24,9 40,12 52,14 C 56,13 58,8 61,7 C 63,6 65,7 66,8 L 71,11 L 66,13 C 67,13 70,13 74,13 C 90,11 104,10 117,11 L 108,15 L 114,19 L 104,19 L 110,24 L 99,22 C 90,20 82,20 76,20 L 72,24 L 76,31 L 69,29 L 63,35 L 57,29 L 50,31 L 54,24 L 50,20 C 44,20 36,20 27,22 L 16,24 L 22,19 L 12,19 L 18,15 Z" />
+      </svg>
 
       <svg class="hero-peaks" data-depth="0.05" viewBox="0 0 1600 500" preserveAspectRatio="none">
         <polygon class="peak peak-far" points="0,500 0,280 240,160 500,270 780,140 1060,260 1340,130 1600,250 1600,500" />
@@ -80,6 +103,7 @@
         <polygon class="peak peak-front" points="0,500 0,440 180,340 400,460 660,320 920,460 1180,340 1440,460 1600,400 1600,500" />
       </svg>
 
+      <div class="hero-particles" id="heroParticles" aria-hidden="true"></div>
       <div class="hero-grid" aria-hidden="true"></div>
     </div>
 
@@ -89,13 +113,13 @@
         <span class="line-mask"><span class="line"><span class="highlight">Higher Ground<svg class="underline-swash" id="underlineSwash" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden="true"><path d="M2,18 C120,4 280,4 398,16" /></svg></span></span></span>
       </h1>
 
-      <p class="hero-sub reveal" data-reveal style="--d:14">
+      <p class="hero-sub">
         Zion Peak is an independent studio building fast, distinctive, conversion-ready
         websites for local businesses — barbershops, cafés, contractors, and everyone
         in between who's tired of looking like a template.
       </p>
 
-      <div class="hero-actions reveal" data-reveal style="--d:16">
+      <div class="hero-actions">
         <a href="#contact" class="btn btn-primary">
           Start your project
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -103,7 +127,7 @@
         <a href="#work" class="btn btn-ghost">See the work</a>
       </div>
 
-      <div class="hero-stats reveal" data-reveal style="--d:18">
+      <div class="hero-stats">
         <div class="stat">
           <span class="stat-num" data-count="2">0</span>
           <span class="stat-label">Projects shipped</span>
@@ -115,11 +139,12 @@
       </div>
     </div>
 
-    <a href="#meaning" class="scroll-path reveal" data-reveal style="--d:20" aria-label="Scroll to explore">
+    <a href="#meaning" class="scroll-path" aria-label="Scroll to explore">
       <span class="scroll-path-track"><span class="scroll-path-dot"></span></span>
       <span class="scroll-path-label">Scroll</span>
     </a>
   </section>
+
 
   <!-- ============ MEANING & PURPOSE ============ -->
   <section class="meaning" id="meaning">
@@ -230,8 +255,8 @@
   <section class="pivot" id="pivot">
     <div class="container">
       <h2 class="pivot-title" id="pivotTitle">
-        <span class="line-mask"><span class="line">Every business</span></span>
-        <span class="line-mask"><span class="line">has a <span class="highlight">peak.</span></span></span>
+        <span class="line-mask"><span class="line">Every Business</span></span>
+        <span class="line-mask"><span class="line">Has a <span class="highlight">Peak.</span></span></span>
       </h2>
     </div>
   </section>
@@ -367,6 +392,9 @@
         <polygon class="peak peak-front" points="0,500 0,440 180,340 400,460 660,320 920,460 1180,340 1440,460 1600,400 1600,500" />
       </svg>
       <div class="hero-glow glow-2"></div>
+      <svg class="hero-eagle" id="contactEagle" viewBox="0 0 120 40" aria-hidden="true">
+        <path d="M 9,11 C 24,9 40,12 52,14 C 56,13 58,8 61,7 C 63,6 65,7 66,8 L 71,11 L 66,13 C 67,13 70,13 74,13 C 90,11 104,10 117,11 L 108,15 L 114,19 L 104,19 L 110,24 L 99,22 C 90,20 82,20 76,20 L 72,24 L 76,31 L 69,29 L 63,35 L 57,29 L 50,31 L 54,24 L 50,20 C 44,20 36,20 27,22 L 16,24 L 22,19 L 12,19 L 18,15 Z" />
+      </svg>
     </div>
 
     <div class="container contact-inner">
@@ -393,8 +421,9 @@
         </div>
       </div>
 
-      <form class="contact-form reveal" data-reveal style="--d:1" id="contactForm" name="contact" method="POST" action="/" data-netlify="true" novalidate>
-        <input type="hidden" name="form-name" value="contact" />
+      <form class="contact-form reveal" data-reveal style="--d:1" id="contactForm" name="contact" method="POST" action="https://formspree.io/f/xrengnvq" novalidate>
+        <input type="hidden" name="_subject" value="New project inquiry — Zion Peak" />
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <div class="form-row">
           <div class="field">
             <label for="name">Name</label>
@@ -408,14 +437,13 @@
         <div class="form-row">
           <div class="field">
             <label for="business">Business type</label>
-            <select id="business" name="business-type">
-              <option value="">Select one</option>
-              <option>Barbershop / Salon</option>
-              <option>Café / Restaurant</option>
-              <option>Contractor / Trades</option>
-              <option>Retail / Boutique</option>
-              <option>Other</option>
-            </select>
+            <div class="autocomplete">
+              <input type="text" id="business" name="business-type" autocomplete="off"
+                placeholder="Start typing — barbershop, café, gym…"
+                role="combobox" aria-expanded="false" aria-controls="businessListbox"
+                aria-autocomplete="list" aria-haspopup="listbox">
+              <ul class="autocomplete-list" id="businessListbox" role="listbox" hidden></ul>
+            </div>
           </div>
           <div class="field">
             <label for="budget">Estimated budget</label>
@@ -433,8 +461,10 @@
           <textarea id="message" name="message" rows="4" required placeholder="What are you trying to build, and what's not working today?"></textarea>
         </div>
         <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+          <span class="btn-success-ripple" aria-hidden="true"></span>
+          <svg class="btn-check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5L9.5 18L20 6.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="btn-label">Send message</span>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
       </form>
@@ -469,7 +499,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/main.js"></script>
-<script src="js/motion.js"></script>
+<script src="js/main.js?v=3"></script>
+<script src="js/motion.js?v=3"></script>
 </body>
 </html>
