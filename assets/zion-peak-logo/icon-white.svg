@@ -1,4 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 5 200 160">
-  <path fill-rule="evenodd" clip-rule="evenodd" fill="#FFFFFF"
-    d="M15 150 L55 70 L85 135 L115 20 L145 130 L170 75 L185 150 Z M115 20 L124 130 L116 130 Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 570 395">
+  <g fill="#FFFFFF">
+    <path d="M28 352 L150 190 L148 275 L258 70 L225 335 L166 390 L122 268 Z"/>
+    <path d="M278 10 L312 86 L290 200 L318 222 L243 390 Z"/>
+    <path d="M330 55 L300 182 L336 204 L280 384 L352 262 Z"/>
+    <path d="M310 305 L405 200 L423 244 L447 176 L545 350 L432 260 L303 332 Z"/>
+  </g>
 </svg>
