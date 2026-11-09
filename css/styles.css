@@ -560,6 +560,18 @@ section { padding: 120px 0; position: relative; }
   filter: drop-shadow(0 0 18px rgba(157, 214, 247, 0.45));
 }
 
+/* WebGL ridge: fills the lower hero; SVG peaks stay as the no-WebGL fallback */
+.hero-terrain {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 64%;
+  pointer-events: none;
+}
+.hero-terrain canvas { display: block; width: 100%; height: 100%; }
+.hero.webgl-on .hero-peaks { display: none; }
+
 .hero-peaks { position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; }
 .peak { opacity: 1; }
 .peak-far   { fill: rgba(157,214,247,0.10); }

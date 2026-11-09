@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=6">
+<link rel="stylesheet" href="css/styles.css?v=7">
 </head>
 <body>
 
@@ -80,6 +80,8 @@
       <svg class="hero-eagle" id="heroEagle" viewBox="0 0 120 40" aria-hidden="true">
         <path d="M 9,11 C 24,9 40,12 52,14 C 56,13 58,8 61,7 C 63,6 65,7 66,8 L 71,11 L 66,13 C 67,13 70,13 74,13 C 90,11 104,10 117,11 L 108,15 L 114,19 L 104,19 L 110,24 L 99,22 C 90,20 82,20 76,20 L 72,24 L 76,31 L 69,29 L 63,35 L 57,29 L 50,31 L 54,24 L 50,20 C 44,20 36,20 27,22 L 16,24 L 22,19 L 12,19 L 18,15 Z" />
       </svg>
+
+      <div class="hero-terrain" id="heroTerrain" data-depth="0.12" aria-hidden="true"></div>
 
       <svg class="hero-peaks" data-depth="0.05" viewBox="0 0 1600 500" preserveAspectRatio="none">
         <polygon class="peak peak-far" points="0,500 0,280 240,160 500,270 780,140 1060,260 1340,130 1600,250 1600,500" />
@@ -543,7 +545,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.149.0/three.min.js"></script>
 <script src="js/main.js?v=3"></script>
 <script src="js/motion.js?v=3"></script>
+<script src="js/terrain.js?v=1"></script>
 </body>
 </html>
