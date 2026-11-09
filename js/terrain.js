@@ -1,4 +1,4 @@
-/* Hero WebGL terrain — a low-poly moonlit ridge rendered with Three.js.
+/* Hero WebGL terrain — a dense silver wireframe massif on a near-black body.
    Progressive enhancement: if Three.js or WebGL is unavailable, the SVG
    peaks remain untouched. On success the hero gets .webgl-on, which hides
    the SVG range; fog layers, moon, particles and the eagle stay on top. */
@@ -25,9 +25,9 @@
   wrap.appendChild(renderer.domElement);
 
   var scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x0b1930, 18, 62);
+  scene.fog = new THREE.Fog(0x0a1420, 20, 70);
 
-  var camera = new THREE.PerspectiveCamera(46, 1, 0.1, 120);
+  var camera = new THREE.PerspectiveCamera(46, 1, 0.1, 140);
   var CAM_Y = 3.2;
   camera.position.set(0, CAM_Y, 21);
 
@@ -45,89 +45,109 @@
     var ux = smooth(fx), uz = smooth(fz);
     return (a * (1 - ux) + b * ux) * (1 - uz) + (c * (1 - ux) + d * ux) * uz;
   }
+  // ridged noise: folds the noise into sharp crests
+  function ridged(x, z) {
+    var v = 1 - Math.abs(2 * valueNoise(x, z) - 1);
+    return v * v;
+  }
 
-  /* ---------- height field: one towering summit, flanked ridge ---------- */
+  /* ---------- height field: central massif, layered foothills ---------- */
   var PEAKS = [
-    { x: -27, z: -13, h: 7, r: 9 },
-    { x: -14, z: -16, h: 11.5, r: 8 },
-    { x: 6, z: -14, h: 19, r: 9.5 },  // the summit
-    { x: 17, z: -16, h: 12, r: 7 },
-    { x: 27, z: -12, h: 7.5, r: 8 }
+    { x: 10, z: -16, h: 17, r: 10 },   // the summit
+    { x: 17, z: -13, h: 12.5, r: 7 },  // right shoulder
+    { x: 3, z: -12, h: 9.5, r: 6.5 },  // left shoulder
+    { x: -11, z: -14, h: 6.5, r: 8 },
+    { x: 26, z: -15, h: 9, r: 8 },
+    { x: -27, z: -12, h: 4.5, r: 9 },
+    { x: 38, z: -11, h: 5.5, r: 9 }
   ];
 
-  function height(x, z) {
+  function peakMass(x, z) {
     var h = 0;
     for (var i = 0; i < PEAKS.length; i++) {
       var p = PEAKS[i];
       var dx = x - p.x;
-      var dz = (z - p.z) * 1.7; // compress depth so peaks form a ridge line
+      var dz = (z - p.z) * 1.6;
       var d = Math.sqrt(dx * dx + dz * dz);
       var t = Math.max(0, 1 - d / p.r);
-      h += p.h * Math.pow(t, 1.6);
+      h += p.h * Math.pow(t, 1.55);
     }
-    // rougher in the back range, calm foothills near the camera
-    var backFactor = 0.3 + 0.7 * Math.min(1, Math.max(0, (-z + 8) / 22));
-    h += (valueNoise(x * 0.14 + 7, z * 0.14 + 3) * 2.6 +
-          valueNoise(x * 0.45 + 2, z * 0.45 + 9) * 1.1) * backFactor;
     return h;
   }
 
-  var geo = new THREE.PlaneGeometry(90, 44, 150, 74);
+  function height(x, z) {
+    var mass = peakMass(x, z);
+    var onMountain = Math.min(1, mass / 5);
+    var backFactor = 0.3 + 0.7 * Math.min(1, Math.max(0, (-z + 8) / 22));
+    var h = mass;
+    // sharp crest folds where the mountain stands
+    h += ridged(x * 0.09 + 4, z * 0.09 + 2) * 3.1 * onMountain;
+    // mid + fine detail everywhere, calmer on the open floor
+    h += (valueNoise(x * 0.16 + 7, z * 0.16 + 3) * 2.2 +
+          valueNoise(x * 0.5 + 2, z * 0.5 + 9) * 0.9) *
+         backFactor * (0.45 + 0.55 * onMountain);
+    // gentle swells so the foreground floor ripples like fabric
+    h += valueNoise(x * 0.07 + 13, z * 0.07 + 6) * 1.1 * (1 - onMountain);
+    return h;
+  }
+
+  /* ---------- geometry: jittered grid -> organic triangulation ---------- */
+  var SEG_X = 220, SEG_Z = 110;
+  var geo = new THREE.PlaneGeometry(100, 50, SEG_X, SEG_Z);
   geo.rotateX(-Math.PI / 2);
 
   var pos = geo.attributes.position;
   var count = pos.count;
-  var solidColors = new Float32Array(count * 3);
-  var base = new THREE.Color(0x0f2037);
-  var baseDark = new THREE.Color(0x081525);
-  var tmp = new THREE.Color();
+  var cellX = 100 / SEG_X, cellZ = 50 / SEG_Z;
   var maxH = 0;
+  var i, x, z;
 
-  for (var i = 0; i < count; i++) {
-    var x = pos.getX(i), z = pos.getZ(i);
+  for (i = 0; i < count; i++) {
+    x = pos.getX(i);
+    z = pos.getZ(i);
+    // jitter interior vertices so the mesh reads as irregular triangles,
+    // not a uniform grid (boundary stays put to keep clean edges)
+    var col = i % (SEG_X + 1), row = Math.floor(i / (SEG_X + 1));
+    if (col > 0 && col < SEG_X && row > 0 && row < SEG_Z) {
+      x += (hash(col * 3 + 1, row * 7 + 2) - 0.5) * cellX * 0.9;
+      z += (hash(col * 5 + 3, row * 11 + 4) - 0.5) * cellZ * 0.9;
+      pos.setX(i, x);
+      pos.setZ(i, z);
+    }
     var h = height(x, z);
     pos.setY(i, h);
     if (h > maxH) maxH = h;
-
-    var shade = valueNoise(x * 0.3 + 11, z * 0.3 + 5);
-    tmp.copy(baseDark).lerp(base, shade);
-    solidColors[i * 3] = tmp.r;
-    solidColors[i * 3 + 1] = tmp.g;
-    solidColors[i * 3 + 2] = tmp.b;
   }
-  geo.setAttribute('color', new THREE.BufferAttribute(solidColors, 3));
-  geo.computeVertexNormals();
 
-  // dark under-mesh: occludes rear wires so the range reads as a solid
-  // silhouette wearing the wireframe, and keeps text legible above it
-  var terrain = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
-    vertexColors: true,
-    flatShading: true,
-    roughness: 0.95,
-    metalness: 0
-  }));
-  terrain.position.z = -4;
-  scene.add(terrain);
+  // near-black body: hides rear wires so the massif reads as a solid
+  // mountain wearing the mesh, and keeps the hero text legible
+  var body = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x07101d }));
+  body.position.z = -4;
+  body.renderOrder = 0;
+  scene.add(body);
 
-  // the star of the scene: blue wire surface, glowing brighter with altitude
+  /* ---------- the wire surface: silver, brighter along the crests ---------- */
   var wireGeo = geo.clone();
   var wireColors = new Float32Array(count * 3);
-  var wireDim = new THREE.Color(0x15385e);
-  var wireMid = new THREE.Color(0x3aa3e8);
-  var wireHot = new THREE.Color(0xcfeaff);
+  var wireDim = new THREE.Color(0x1d2b3a);
+  var wireMid = new THREE.Color(0x8fa8bd);
+  var wireHot = new THREE.Color(0xeef5fb);
+  var tmp = new THREE.Color();
 
-  for (var j = 0; j < count; j++) {
-    var wy = wireGeo.attributes.position.getY(j);
-    var wz = wireGeo.attributes.position.getZ(j);
-    var alt = Math.min(1, Math.max(0, wy / maxH));
-    if (alt < 0.45) tmp.copy(wireDim).lerp(wireMid, alt / 0.45);
-    else tmp.copy(wireMid).lerp(wireHot, (alt - 0.45) / 0.55);
+  for (i = 0; i < count; i++) {
+    x = wireGeo.attributes.position.getX(i);
+    z = wireGeo.attributes.position.getZ(i);
+    var wy = wireGeo.attributes.position.getY(i);
+    var alt = Math.pow(Math.min(1, Math.max(0, wy / maxH)), 1.2);
+    if (alt < 0.5) tmp.copy(wireDim).lerp(wireMid, alt / 0.5);
+    else tmp.copy(wireMid).lerp(wireHot, (alt - 0.5) / 0.5);
+    // crest lines pop
+    tmp.multiplyScalar(0.7 + 0.6 * ridged(x * 0.09 + 4, z * 0.09 + 2));
     // keep the flat foreground floor faint so it never fights the content
-    var floorDim = 0.35 + 0.65 * Math.min(1, Math.max(0, (-wz + 14) / 26));
-    tmp.multiplyScalar(floorDim);
-    wireColors[j * 3] = tmp.r;
-    wireColors[j * 3 + 1] = tmp.g;
-    wireColors[j * 3 + 2] = tmp.b;
+    tmp.multiplyScalar(0.3 + 0.7 * Math.min(1, Math.max(0, (-z + 14) / 26)));
+    wireColors[i * 3] = tmp.r;
+    wireColors[i * 3 + 1] = tmp.g;
+    wireColors[i * 3 + 2] = tmp.b;
   }
   wireGeo.setAttribute('color', new THREE.BufferAttribute(wireColors, 3));
 
@@ -135,17 +155,14 @@
     wireframe: true,
     vertexColors: true,
     transparent: true,
-    opacity: 0.55
+    opacity: 0.5,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
   }));
   wire.position.z = -4;
   wire.position.y = 0.04;
+  wire.renderOrder = 1;
   scene.add(wire);
-
-  // moonlight from the upper right, cool ambient bounce
-  var moonlight = new THREE.DirectionalLight(0xcfe4f8, 0.85);
-  moonlight.position.set(26, 30, 10);
-  scene.add(moonlight);
-  scene.add(new THREE.HemisphereLight(0x2c4a6e, 0x070d18, 0.7));
 
   function resize() {
     var w = wrap.clientWidth || 1;
@@ -156,7 +173,7 @@
   }
 
   function render() {
-    camera.lookAt(0, 6.2, -8);
+    camera.lookAt(0, 6.0, -8);
     renderer.render(scene, camera);
   }
 
@@ -165,7 +182,7 @@
   hero.classList.add('webgl-on');
   window.addEventListener('resize', function () { resize(); render(); });
 
-  if (prefersReducedMotion) return; // static moonlit frame, no drift
+  if (prefersReducedMotion) return; // static frame, no drift
 
   /* ---------- slow camera drift, running only while the hero is visible ---------- */
   var running = false;
