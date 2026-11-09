@@ -789,25 +789,11 @@ section { padding: 120px 0; position: relative; }
    ============================================================ */
 .work { background: linear-gradient(180deg, var(--tone-pivot), var(--tone-growth)); padding-bottom: 0; }
 
-/* Pinned horizontal-pan track (desktop). JS enables the pin; this is the
-   static/mobile layout that also serves as the no-JS and reduced-motion fallback. */
-.work-pin {
-  position: relative;
-  overflow: hidden;
-}
-.work-track {
-  display: flex;
-  align-items: center;
-  gap: 5vw;
-  padding: 40px 8vw 120px;
-}
 .project-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--border);
-  flex: 0 0 auto;
-  width: min(720px, 82vw);
   transition: box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med) var(--ease-out);
 }
 .project-card:hover {
@@ -874,24 +860,6 @@ section { padding: 120px 0; position: relative; }
   background: var(--blue-light);
   box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.25);
 }
-.mock-concept {
-  margin-left: auto;
-  display: inline-flex; align-items: center; gap: 5px;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(244, 246, 248, 0.75);
-  background: rgba(244, 246, 248, 0.08);
-  border: 1px solid var(--border-strong);
-  padding: 3px 9px;
-  border-radius: 999px;
-}
-.mock-concept-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: rgba(244, 246, 248, 0.6);
-}
-
 .mock-screen { aspect-ratio: 16 / 12; overflow: hidden; position: relative; }
 .mock-screen-photo { aspect-ratio: 1.75; }
 .mock-screen-photo img {
@@ -903,9 +871,29 @@ section { padding: 120px 0; position: relative; }
 }
 .project-card:hover .mock-screen-photo img { transform: scale(1.05); }
 
-/* Barbershop palette (real screenshot — this is just the image-load fallback tone) */
-.mock-barber .mock-screen { background: var(--bg-deep); color: #f2e6d3; }
-.mock-carcrazy .mock-screen { background: var(--bg-deep); }
+/* Portfolio grid: featured card full width, then two columns */
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  padding: 40px 0 120px;
+}
+.project-card-featured { grid-column: 1 / -1; }
+
+/* Clean slot shown until a project's real screenshot lands in assets/images/ */
+.mock-screen-pending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+}
+.mock-pending-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244, 246, 248, 0.4);
+}
 
 .project-info { padding: 26px 28px 30px; }
 .project-info h3 { font-size: 1.3rem; margin-bottom: 10px; }
@@ -1283,14 +1271,8 @@ section { padding: 120px 0; position: relative; }
   .steps { grid-template-columns: 1fr; }
   .meaning-grid { grid-template-columns: 1fr; gap: 44px; }
 
-  /* Work track: JS disables the scroll-pin below 900px (see motion.js), so
-     this collapses to a plain stacked, vertically-scrolling column. */
-  .work-track {
-    flex-direction: column;
-    padding: 40px 20px 20px;
-    gap: 28px;
-  }
-  .project-card { width: 100%; }
+  /* Portfolio grid collapses to a single stacked column on phones */
+  .work-grid { grid-template-columns: 1fr; padding: 32px 0 80px; }
 
   .contact-inner { padding: 24px; }
   .form-row { grid-template-columns: 1fr; }

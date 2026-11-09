@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=3">
+<link rel="stylesheet" href="css/styles.css?v=4">
 </head>
 <body>
 
@@ -264,32 +264,54 @@
       <div class="section-head">
         <h2 class="reveal" data-reveal>Built for businesses like yours</h2>
         <p class="section-lead reveal" data-reveal>
-          A sample of the kind of local-business sites Zion Peak builds — each one designed
-          around its brand, not a shared theme.
+          Real projects I've shipped — each one designed around its brand, not a shared theme.
         </p>
       </div>
-    </div>
 
-    <div class="work-pin" id="workPin">
-      <div class="work-track" id="workTrack">
+      <div class="work-grid">
 
-        <!-- Project 1: Barbershop (real client — ValzCutz) -->
-        <article class="project-card tilt-card">
-          <div class="mock mock-barber">
+        <!-- 1. Zion Peak (featured) -->
+        <article class="project-card tilt-card project-card-featured reveal" data-reveal style="--d:0">
+          <div class="mock">
+            <div class="mock-chrome">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="mock-url">zionpeakstudio.com</span>
+              <span class="mock-live"><span class="mock-live-dot"></span>Live</span>
+            </div>
+            <div class="mock-screen mock-screen-photo mock-screen-pending">
+              <span class="mock-pending-label">Screenshot coming soon</span>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>Zion Peak</h3>
+            <p>My own studio site. Faith-rooted web design for local businesses — custom branding, hand-coded, built to feel nothing like a template.</p>
+            <ul class="tag-list">
+              <li>Branding</li><li>Custom design</li><li>Hand-coded</li>
+            </ul>
+            <a href="https://zionpeakstudio.com" target="_blank" rel="noopener noreferrer" class="project-link">
+              Visit live site
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M11 5H6M11 5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- 2. ValzCutz -->
+        <article class="project-card tilt-card reveal" data-reveal style="--d:1">
+          <div class="mock">
             <div class="mock-chrome">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
               <span class="mock-url">valzcutz7.com</span>
               <span class="mock-live"><span class="mock-live-dot"></span>Live</span>
             </div>
             <div class="mock-screen mock-screen-photo">
-              <img src="assets/images/valzcutz-screenshot.png" alt="Screenshot of the ValzCutz homepage" loading="lazy">
+              <img src="assets/images/valzcutz.png" alt="ValzCutz homepage — booking-first barbershop site" loading="lazy">
             </div>
           </div>
           <div class="project-info">
             <h3>ValzCutz</h3>
-            <p>A real client win — booking-first design that turned walk-ins into scheduled appointments in under a minute.</p>
+            <p>Booking site for my own barbering business — book by service and time slot against availability I update week to week, with a full service menu and prices.</p>
             <ul class="tag-list">
-              <li>Booking integration</li><li>Instagram feed</li><li>Mobile-first</li>
+              <li>Booking flow</li><li>Service menu</li><li>Mobile-first</li>
             </ul>
             <a href="https://valzcutz7.com" target="_blank" rel="noopener noreferrer" class="project-link">
               Visit live site
@@ -298,24 +320,78 @@
           </div>
         </article>
 
-        <!-- Project 2: Car wash (real business, concept pitch — Car Crazy) -->
-        <article class="project-card tilt-card">
-          <div class="mock mock-carcrazy">
+        <!-- 3. Naomi's Nail Diary -->
+        <article class="project-card tilt-card reveal" data-reveal style="--d:2">
+          <div class="mock">
             <div class="mock-chrome">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="mock-url">carcrazy-marshill.com</span>
-              <span class="mock-concept"><span class="mock-concept-dot"></span>Concept build</span>
+              <span class="mock-url">naominaildiary.com</span>
+              <span class="mock-live"><span class="mock-live-dot"></span>Live</span>
             </div>
-            <div class="mock-screen mock-screen-photo">
-              <img src="assets/images/car-crazy-screenshot.jpg" alt="Car Crazy car wash building with a blue metal roof and open wash bays in Mars Hill, NC" loading="lazy">
+            <div class="mock-screen mock-screen-photo mock-screen-pending">
+              <span class="mock-pending-label">Screenshot coming soon</span>
             </div>
           </div>
           <div class="project-info">
-            <h3>Car Crazy</h3>
-            <p>A pitch demo for a real Mars Hill, NC car wash — self-serve bays and an automatic tunnel wash, built to show what their site could be.</p>
+            <h3>Naomi's Nail Diary</h3>
+            <p>Booking site and owner dashboard for a nail business. Clients book online and upload inspo photos with their booking; the owner signs in with a magic link to manage appointments.</p>
             <ul class="tag-list">
-              <li>Local SEO schema</li><li>Click-to-call</li><li>Mobile-first</li>
+              <li>Booking flow</li><li>Owner dashboard</li><li>Photo upload</li>
             </ul>
+            <a href="https://www.naominaildiary.com" target="_blank" rel="noopener noreferrer" class="project-link">
+              Visit live site
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M11 5H6M11 5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- 4. Braided By B -->
+        <article class="project-card tilt-card reveal" data-reveal style="--d:3">
+          <div class="mock">
+            <div class="mock-chrome">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="mock-url">braided-by-b.vercel.app</span>
+              <span class="mock-live"><span class="mock-live-dot"></span>Live</span>
+            </div>
+            <div class="mock-screen mock-screen-photo mock-screen-pending">
+              <span class="mock-pending-label">Screenshot coming soon</span>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>Braided By B</h3>
+            <p>Website for Miss B's braiding studio in Dayton, Ohio — clients browse styles and book through a guided flow, and Miss B manages appointments from her own dashboard.</p>
+            <ul class="tag-list">
+              <li>Booking flow</li><li>Owner dashboard</li><li>Style finder</li>
+            </ul>
+            <a href="https://braided-by-b.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link">
+              Visit live site
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M11 5H6M11 5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- 5. All Nations Rise -->
+        <article class="project-card tilt-card reveal" data-reveal style="--d:4">
+          <div class="mock">
+            <div class="mock-chrome">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="mock-url">allnationsrise.vercel.app</span>
+              <span class="mock-live"><span class="mock-live-dot"></span>Live</span>
+            </div>
+            <div class="mock-screen mock-screen-photo mock-screen-pending">
+              <span class="mock-pending-label">Screenshot coming soon</span>
+            </div>
+          </div>
+          <div class="project-info">
+            <h3>All Nations Rise</h3>
+            <p>Site for the international cultures showcase at MVNU — Saturday 10 April 2027, Ariel Arena. Every country on campus shows its culture through stands, food, modelling and performance.</p>
+            <ul class="tag-list">
+              <li>Event site</li><li>Community</li><li>Mobile-first</li>
+            </ul>
+            <a href="https://allnationsrise.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link">
+              Visit live site
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 11 11 5M11 5H6M11 5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
           </div>
         </article>
 
