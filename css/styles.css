@@ -871,28 +871,12 @@ section { padding: 120px 0; position: relative; }
 }
 .project-card:hover .mock-screen-photo img { transform: scale(1.05); }
 
-/* Portfolio grid: featured card full width, then two columns */
+/* Portfolio grid: two columns of real-project cards */
 .work-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 28px;
   padding: 40px 0 120px;
-}
-.project-card-featured { grid-column: 1 / -1; }
-
-/* Clean slot shown until a project's real screenshot lands in assets/images/ */
-.mock-screen-pending {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-deep);
-}
-.mock-pending-label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(244, 246, 248, 0.4);
 }
 
 .project-info { padding: 26px 28px 30px; }
