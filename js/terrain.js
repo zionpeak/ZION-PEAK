@@ -27,9 +27,9 @@
   var scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x0a1420, 20, 70);
 
-  var camera = new THREE.PerspectiveCamera(46, 1, 0.1, 140);
-  var CAM_Y = 3.2;
-  camera.position.set(0, CAM_Y, 21);
+  var camera = new THREE.PerspectiveCamera(50, 1, 0.1, 140);
+  var CAM_Y = 3.0;
+  camera.position.set(0, CAM_Y, 22);
 
   /* ---------- deterministic value noise (stable ridge across loads) ---------- */
   function hash(ix, iz) {
@@ -53,13 +53,12 @@
 
   /* ---------- height field: central massif, layered foothills ---------- */
   var PEAKS = [
-    { x: 10, z: -16, h: 17, r: 10 },   // the summit
-    { x: 17, z: -13, h: 12.5, r: 7 },  // right shoulder
-    { x: 3, z: -12, h: 9.5, r: 6.5 },  // left shoulder
-    { x: -11, z: -14, h: 6.5, r: 8 },
-    { x: 26, z: -15, h: 9, r: 8 },
-    { x: -27, z: -12, h: 4.5, r: 9 },
-    { x: 38, z: -11, h: 5.5, r: 9 }
+    { x: 11, z: -15, h: 21, r: 11 },   // the monolith
+    { x: 18, z: -11, h: 12, r: 7 },    // right shoulder
+    { x: 4, z: -10, h: 9.5, r: 6 },    // left shoulder
+    { x: -14, z: -13, h: 7, r: 8 },
+    { x: 28, z: -13, h: 8.5, r: 8 },
+    { x: -30, z: -11, h: 4.5, r: 9 }
   ];
 
   function peakMass(x, z) {
@@ -67,10 +66,10 @@
     for (var i = 0; i < PEAKS.length; i++) {
       var p = PEAKS[i];
       var dx = x - p.x;
-      var dz = (z - p.z) * 1.6;
+      var dz = (z - p.z) * 1.5;
       var d = Math.sqrt(dx * dx + dz * dz);
       var t = Math.max(0, 1 - d / p.r);
-      h += p.h * Math.pow(t, 1.55);
+      h += p.h * Math.pow(t, 1.5);
     }
     return h;
   }
@@ -81,18 +80,20 @@
     var backFactor = 0.3 + 0.7 * Math.min(1, Math.max(0, (-z + 8) / 22));
     var h = mass;
     // sharp crest folds where the mountain stands
-    h += ridged(x * 0.09 + 4, z * 0.09 + 2) * 3.1 * onMountain;
+    h += ridged(x * 0.09 + 4, z * 0.09 + 2) * 4.2 * onMountain;
     // mid + fine detail everywhere, calmer on the open floor
     h += (valueNoise(x * 0.16 + 7, z * 0.16 + 3) * 2.2 +
           valueNoise(x * 0.5 + 2, z * 0.5 + 9) * 0.9) *
          backFactor * (0.45 + 0.55 * onMountain);
+    // micro wrinkles so the faces read as fine gauze up close
+    h += valueNoise(x * 1.1 + 5, z * 1.1 + 1) * 0.5 * onMountain;
     // gentle swells so the foreground floor ripples like fabric
     h += valueNoise(x * 0.07 + 13, z * 0.07 + 6) * 1.1 * (1 - onMountain);
     return h;
   }
 
   /* ---------- geometry: jittered grid -> organic triangulation ---------- */
-  var SEG_X = 220, SEG_Z = 110;
+  var SEG_X = 260, SEG_Z = 130;
   var geo = new THREE.PlaneGeometry(100, 50, SEG_X, SEG_Z);
   geo.rotateX(-Math.PI / 2);
 
@@ -129,9 +130,9 @@
   /* ---------- the wire surface: silver, brighter along the crests ---------- */
   var wireGeo = geo.clone();
   var wireColors = new Float32Array(count * 3);
-  var wireDim = new THREE.Color(0x1d2b3a);
-  var wireMid = new THREE.Color(0x8fa8bd);
-  var wireHot = new THREE.Color(0xeef5fb);
+  var wireDim = new THREE.Color(0x232b33);
+  var wireMid = new THREE.Color(0x9aa6b2);
+  var wireHot = new THREE.Color(0xf2f6fa);
   var tmp = new THREE.Color();
 
   for (i = 0; i < count; i++) {
@@ -142,9 +143,11 @@
     if (alt < 0.5) tmp.copy(wireDim).lerp(wireMid, alt / 0.5);
     else tmp.copy(wireMid).lerp(wireHot, (alt - 0.5) / 0.5);
     // crest lines pop
-    tmp.multiplyScalar(0.7 + 0.6 * ridged(x * 0.09 + 4, z * 0.09 + 2));
+    tmp.multiplyScalar(0.65 + 0.7 * ridged(x * 0.09 + 4, z * 0.09 + 2));
     // keep the flat foreground floor faint so it never fights the content
     tmp.multiplyScalar(0.3 + 0.7 * Math.min(1, Math.max(0, (-z + 14) / 26)));
+    // ease the lines down under the headline/copy column on the left
+    tmp.multiplyScalar(0.55 + 0.45 * Math.min(1, Math.max(0, (x + 20) / 22)));
     wireColors[i * 3] = tmp.r;
     wireColors[i * 3 + 1] = tmp.g;
     wireColors[i * 3 + 2] = tmp.b;
@@ -164,17 +167,32 @@
   wire.renderOrder = 1;
   scene.add(wire);
 
+  // bloom: the soft luminous halo where lines cluster (the reference's glow)
+  var composer = null;
+  if (THREE.EffectComposer && THREE.RenderPass && THREE.UnrealBloomPass) {
+    composer = new THREE.EffectComposer(renderer);
+    composer.addPass(new THREE.RenderPass(scene, camera));
+    composer.addPass(new THREE.UnrealBloomPass(
+      new THREE.Vector2(wrap.clientWidth || 1, wrap.clientHeight || 1),
+      0.6,   // strength
+      0.55,  // radius
+      0.12   // threshold
+    ));
+  }
+
   function resize() {
     var w = wrap.clientWidth || 1;
     var h = wrap.clientHeight || 1;
     renderer.setSize(w, h, false);
+    if (composer) composer.setSize(w, h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
   }
 
   function render() {
-    camera.lookAt(0, 6.0, -8);
-    renderer.render(scene, camera);
+    camera.lookAt(0, 7.5, -8);
+    if (composer) composer.render();
+    else renderer.render(scene, camera);
   }
 
   resize();
