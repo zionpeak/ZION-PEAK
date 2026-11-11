@@ -567,7 +567,35 @@ section { padding: 120px 0; position: relative; }
   pointer-events: none;
 }
 .hero-terrain canvas { display: block; width: 100%; height: 100%; }
+.hero-terrain.terrain-image {
+  background-image: url('../assets/images/hero-mountain-v2.jpg');
+  background-size: cover;
+  background-position: 62% bottom;
+}
+@media (max-width: 760px) {
+  .hero-terrain.terrain-image {
+    background-image: url('../assets/images/hero-mountain-mobile-v2.jpg');
+    background-position: center bottom;
+  }
+}
+/* Desktop: moon sits on the artwork's baked-in glow, just left of the summit */
+@media (min-width: 761px) {
+  .hero-moon {
+    top: 17%;
+    left: 56%;
+    right: auto;
+  }
+}
+
+/* Desktop: hero text hugs the container's left edge (same as the nav logo)
+   and lives in roughly the left 45%, keeping the summit clear */
+@media (min-width: 761px) {
+  .hero-inner { width: 100%; }
+  .hero-title-slogan { font-size: clamp(2.6rem, 6.7vw, 8rem); }
+  .hero-sub { max-width: 46ch; }
+}
 .hero.webgl-on .hero-peaks { display: none; }
+.hero.webgl-on .hero-grid { display: none; }
 
 .hero-peaks { position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; }
 .peak { opacity: 1; }
